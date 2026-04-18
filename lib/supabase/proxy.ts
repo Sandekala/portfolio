@@ -42,13 +42,14 @@ export async function updateSession(request: NextRequest) {
 
   const user = data?.claims
 
+  const PATH_LOGIN = '/auth/login'
   const { pathname } = request.nextUrl
   const isDashboardRoute = pathname.startsWith('/dashboard')
-  const isLoginPage = pathname === '/dashboard/login'
+  const isLoginPage = pathname === PATH_LOGIN
 
   // No token → block dashboard access
   if (isDashboardRoute && !user && !isLoginPage) {
-    return NextResponse.redirect(new URL('/dashboard/login', request.url))
+    return NextResponse.redirect(new URL(PATH_LOGIN, request.url))
   }
 
   // Already logged in → prevent going back to login page

@@ -1,13 +1,17 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Page() {
-  return (
-    <Tooltip>
-      <TooltipTrigger render={<Button variant="outline">Hover</Button>} />
-      <TooltipContent>
-        <p>Add to library</p>
-      </TooltipContent>
-    </Tooltip>
-  )
+  const router = useRouter()
+
+  const logout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/auth/login')
+  }
+  return <Button onClick={logout}>Logout</Button>
 }
