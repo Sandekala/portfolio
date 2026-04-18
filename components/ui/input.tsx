@@ -1,7 +1,13 @@
-import { Input as InputPrimitive } from '@base-ui/react/input'
+'use client'
+
+import dynamic from 'next/dynamic'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+
+const InputPrimitive = dynamic(() => import('@base-ui/react/input').then((m) => m.Input), {
+  ssr: false,
+})
 
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
