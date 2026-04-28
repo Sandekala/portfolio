@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { LayoutSidebar } from '@/components/layout/sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
@@ -11,10 +12,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <SidebarProvider>
       <LayoutSidebar />
-      <main className="h-dvh w-screen overflow-auto">
-        <SidebarTrigger />
-        {children}
-      </main>
+      <SidebarTrigger />
+
+      <main className="h-dvh w-screen overflow-auto pr-7">{children}</main>
     </SidebarProvider>
   )
 }
