@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 
 import { LayoutSidebar } from '@/components/layout/sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'

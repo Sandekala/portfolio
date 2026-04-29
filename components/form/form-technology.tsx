@@ -29,37 +29,28 @@ type Props = {
   onSubmit: (data: { name: string; icon_url: string }) => void
   defaultValues?: Technology | null
 }
+const DEFAULT_VALUES = {
+  name: '',
+  icon_url: '',
+}
 
 export function FormTechnology({ open, isLoading, onOpenChange, onSubmit, defaultValues }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      icon_url: '',
-    },
+    defaultValues: DEFAULT_VALUES,
   })
 
   // populate form when editing
-  useEffect(() => {
-    if (defaultValues) {
-      form.reset(defaultValues)
-    } else {
-      form.reset({
-        name: '',
-        icon_url: '',
-      })
-    }
-  }, [defaultValues, form])
 
   useEffect(() => {
+    const values = open ? (defaultValues ?? DEFAULT_VALUES) : DEFAULT_VALUES
+
+    form.reset(values)
+
     if (!open) {
-      form.reset({
-        name: '',
-        icon_url: '',
-      })
       form.clearErrors()
     }
-  }, [open, form])
+  }, [open, defaultValues, form])
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     onSubmit({
@@ -85,7 +76,7 @@ export function FormTechnology({ open, isLoading, onOpenChange, onSubmit, defaul
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Name</FieldLabel>
-                  <Input {...field} placeholder="React" />
+                  <Input {...field} placeholder="Please input name..." />
                   {fieldState.error && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}

@@ -27,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Profile } from '@/types'
 
-import { Textarea } from '../ui/textarea'
+import BaseEditor from '../base/base-editor'
 
 export const formSchema = z.object({
   full_name: z.string().min(1, 'Full Name is required'),
@@ -116,25 +116,19 @@ export default function FormProfile({
   /**
    * SETUP EFFECTS
    */
-  // populate form when editing
   useEffect(() => {
-    if (defaultValues) {
-      form.reset(defaultValues)
-    } else {
-      form.reset(DEFAULT_VALUES)
-    }
-  }, [defaultValues, form])
+    const values = open ? (defaultValues ?? DEFAULT_VALUES) : DEFAULT_VALUES
 
-  useEffect(() => {
+    form.reset(values)
+
     if (!open) {
-      form.reset(DEFAULT_VALUES)
       form.clearErrors()
     }
-  }, [open, form])
+  }, [open, defaultValues, form])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[calc(100vw-20rem)]!">
         <DialogHeader>
           <DialogTitle>{defaultValues?.id ? 'Edit Profile' : 'Create Profile'}</DialogTitle>
         </DialogHeader>
@@ -187,7 +181,7 @@ export default function FormProfile({
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Bio</FieldLabel>
-                  <Textarea {...field} placeholder="Please input Bio..." />
+                  <BaseEditor model={field.value || ''} onChange={field.onChange} />
                   {fieldState.error && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
@@ -199,7 +193,7 @@ export default function FormProfile({
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Full Bio</FieldLabel>
-                  <Textarea {...field} placeholder="Please input Full Bio..." />
+                  <BaseEditor model={field.value || ''} onChange={field.onChange} />
                   {fieldState.error && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
