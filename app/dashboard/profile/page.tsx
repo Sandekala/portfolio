@@ -49,19 +49,7 @@ export default function Page() {
   const handleSubmit = async (formData: z.infer<typeof formSchema>) => {
     try {
       if (profile?.id) {
-        const { error } = await supabase
-          .from('profiles')
-          .update({
-            full_name: formData.full_name,
-            job_title: formData.job_title,
-            bio: formData.bio,
-            full_bio: formData.full_bio,
-            cv_url: formData.cv_url,
-            email: formData.email,
-            avatar_url: formData.avatar_url,
-            social_links: formData.social_links,
-          })
-          .eq('id', profile.id)
+        const { error } = await supabase.from('profiles').update(formData).eq('id', profile.id)
 
         if (error) throw error
         toast.success('Profile updated successfully')
@@ -123,7 +111,7 @@ export default function Page() {
       {/* Header Actions */}
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Profile</h1>
-        <Button variant="outline" size="sm" onClick={() => setIsOpen(true)}>
+        <Button variant="default" size="sm" onClick={() => setIsOpen(true)}>
           <SquarePen className="mr-2 h-4 w-4" />
           Edit Profile
         </Button>
