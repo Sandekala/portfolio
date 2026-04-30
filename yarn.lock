@@ -374,6 +374,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ckeditor/ckeditor5-integrations-common@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "@ckeditor/ckeditor5-integrations-common@npm:2.3.1"
+  peerDependencies:
+    ckeditor5: ">=42.0.0 || ^0.0.0-nightly"
+  checksum: 10c0/307b0a74075364e68a23204028e1fa946c48572fb13686d73ecf7b5e3900005cb2177f9e9f0e8eb54b1d263e18c5e68c4a370493ad05b2d276859ed36e7c95a6
+  languageName: node
+  linkType: hard
+
+"@ckeditor/ckeditor5-react@npm:^11.1.2":
+  version: 11.1.2
+  resolution: "@ckeditor/ckeditor5-react@npm:11.1.2"
+  dependencies:
+    "@ckeditor/ckeditor5-integrations-common": "npm:^2.3.1"
+  peerDependencies:
+    ckeditor5: ">=46.0.0 || ^0.0.0-nightly || ^0.0.0-internal"
+    react: ^16.13.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/fb52161652e3cb6d3aa485645bd8e6c8187d1f90272b55ad8f3f9a04ad902b0d83016f8009c8112874736864aaea1b0260048d63c350dd73d3593045f6ab1dc9
+  languageName: node
+  linkType: hard
+
 "@date-fns/tz@npm:^1.4.1":
   version: 1.4.1
   resolution: "@date-fns/tz@npm:1.4.1"
@@ -1575,6 +1596,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
+  languageName: node
+  linkType: hard
+
 "@types/validate-npm-package-name@npm:^4.0.2":
   version: 4.0.2
   resolution: "@types/validate-npm-package-name@npm:4.0.2"
@@ -2671,6 +2699,18 @@ __metadata:
   dependencies:
     esutils: "npm:^2.0.2"
   checksum: 10c0/b6416aaff1f380bf56c3b552f31fdf7a69b45689368deca72d28636f41c16bb28ec3ebc40ace97db4c1afc0ceeb8120e8492fe0046841c94c2933b2e30a7d5ac
+  languageName: node
+  linkType: hard
+
+"dompurify@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "dompurify@npm:3.4.1"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/440a4246020cb54b82ef2cb66381e4d310a0c470f9994655e61b6122811f0eaa00a2f9665d2bed30ca3f58932ba7bb0d5e26fdfce61c8daf35d21a3f5a799e48
   languageName: node
   linkType: hard
 
@@ -5408,6 +5448,7 @@ __metadata:
   resolution: "portfolio@workspace:."
   dependencies:
     "@base-ui/react": "npm:^1.4.0"
+    "@ckeditor/ckeditor5-react": "npm:^11.1.2"
     "@eslint/eslintrc": "npm:^3"
     "@hookform/resolvers": "npm:^5.2.2"
     "@supabase/ssr": "npm:^0.10.2"
@@ -5420,6 +5461,7 @@ __metadata:
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^4.1.0"
+    dompurify: "npm:^3.4.1"
     eslint: "npm:^9.39.4"
     eslint-config-next: "npm:16.1.7"
     eslint-config-prettier: "npm:^10.1.8"

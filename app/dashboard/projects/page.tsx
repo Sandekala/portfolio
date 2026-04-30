@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
@@ -6,10 +5,13 @@ import { SquarePen, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import useSWR from 'swr'
+import z from 'zod'
 
+import BaseHtmlRenderer from '@/components/base/base-hmtl-renderer'
 import { BaseTable } from '@/components/base/base-table'
-import { FormTechnology } from '@/components/form/form-technology'
+import FormProject, { formSchema } from '@/components/form/form-project'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
 import { createClient } from '@/lib/supabase/client'
 import { Project } from '@/types'
 
@@ -44,16 +46,10 @@ export default function Page() {
     setIsOpen(true)
   }
 
-  const handleSubmit = async (formData: { name: string; icon_url: string }) => {
+  const handleSubmit = async (formData: z.infer<typeof formSchema>) => {
     try {
       if (selected?.id) {
-        const { error } = await supabase
-          .from('projects')
-          .update({
-            name: formData.name,
-            icon_url: formData.icon_url,
-          })
-          .eq('id', selected.id)
+        const { error } = await supabase.from('projects').update(formData).eq('id', selected.id)
 
         if (error) throw error
         toast.success('Updated successfully')
@@ -85,23 +81,78 @@ export default function Page() {
     }
   }
 
+  const handleFeaturedChange = async (isFeatured: boolean, payload: Project): Promise<void> => {
+    const { error } = await supabase
+      .from('projects')
+      .update({ ...payload, is_featured: isFeatured })
+      .eq('id', payload.id)
+
+    if (error) {
+      toast.error(error.message)
+      return
+    }
+
+    await mutate() // ✅ refresh data
+    toast.success('Updated successfully')
+  }
   /**
    * COLUMNS
    */
   const columns: ColumnDef<Project>[] = [
-    { accessorKey: 'name', header: 'Name' },
+    { header: 'No', cell: ({ row }) => <p>{row.index + 1}</p> },
+    { accessorKey: 'title', header: 'Title' },
     {
-      accessorKey: 'icon_url',
-      header: 'Icon URL',
-      cell: ({ row }) => {
-        const iconUrl = row.getValue<string>('icon_url')
-
-        return (
-          <div>
-            <img src={iconUrl} alt={row.getValue('name')} width={24} height={24} />
-          </div>
-        )
-      },
+      accessorKey: 'description',
+      header: 'Short Description',
+      cell: ({ row }) => (
+        <div className="line-clamp-6 w-[20rem] whitespace-normal">{row.original.description}</div>
+      ),
+    },
+    {
+      accessorKey: 'content',
+      header: 'Content',
+      cell: ({ row }) => (
+        <div className="line-clamp-6 w-160 whitespace-normal">
+          <BaseHtmlRenderer>{row.original.content}</BaseHtmlRenderer>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'image_url',
+      header: 'Image Url',
+      cell: ({ row }) => (
+        <a href={row.original.image_url} target="_blank">
+          Open Link
+        </a>
+      ),
+    },
+    {
+      accessorKey: 'demo_url',
+      header: 'Demo Url',
+      cell: ({ row }) => (
+        <a href={row.original.demo_url} target="_blank">
+          Open Link
+        </a>
+      ),
+    },
+    {
+      accessorKey: 'github_url',
+      header: 'Github Url',
+      cell: ({ row }) => (
+        <a href={row.original.github_url} target="_blank">
+          Open Link
+        </a>
+      ),
+    },
+    {
+      accessorKey: 'is_featured',
+      header: 'Featured',
+      cell: ({ row }) => (
+        <Switch
+          checked={row.original.is_featured}
+          onCheckedChange={(checked) => handleFeaturedChange(checked, row.original)}
+        ></Switch>
+      ),
     },
     {
       id: 'action',
@@ -137,7 +188,7 @@ export default function Page() {
 
       <BaseTable columns={columns} data={data!} />
 
-      <FormTechnology
+      <FormProject
         key={selected?.id || 'new'}
         open={isOpen}
         onOpenChange={setIsOpen}
